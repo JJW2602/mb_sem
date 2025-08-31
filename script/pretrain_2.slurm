@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
-#SBATCH --array=0-199%70
+#SBATCH --array=0-99%50
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.out
 #SBATCH --error=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.err
 
@@ -97,6 +97,8 @@ python pretrain.py \
   snapshot_dir="snapshot" \
   wandb_project="urlb_pretraining_walker_quadruped" \
   hydra.run.dir="${LOG_BASE}"
+
+
 
 echo "=========== seff & dmesg ==========="
 seff $SLURM_JOB_ID 2>/dev/null || true

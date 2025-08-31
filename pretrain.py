@@ -235,10 +235,10 @@ class Workspace:
                 self.train_video_recorder.init(time_step.observation)
                 
                 # try to save snapshot
-                total_step_episode_period = self.global_episode * episode_frame
-                if total_step_episode_period in self.cfg.snapshots:
+                self.total_step_episode_period = self.global_episode * episode_frame
+                if self.total_step_episode_period in self.cfg.snapshots:
                     self.save_snapshot()
-                episode_step = 1 # if walker, quadruped env, episode_step starts from 0
+                episode_step = 0 # if walker, quadruped env, episode_step starts from 0
                 episode_reward = 0
 
             # try to evaluate

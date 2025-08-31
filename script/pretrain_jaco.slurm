@@ -3,7 +3,7 @@
 #SBATCH --partition=big_suma_rtx3090
 #SBATCH --qos=big_qos
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
 #SBATCH --array=0-269%10
@@ -15,9 +15,11 @@ BASE_TMP=${SLURM_TMPDIR:-/tmp/$USER/$SLURM_JOB_ID}
 mkdir -p "$BASE_TMP"
 
 
+
+
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
-DOMAINS=("walker" "quadruped" "jaco")
+DOMAINS=("walker" "quadruped")
 AGENT_LABELS=("icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement")
 AGENT_KEYS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement")
 AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement")
@@ -25,7 +27,7 @@ AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "d
 
 S=${#SEEDS[@]}            # 10
 A=${#AGENT_LABELS[@]}     # 9
-D=${#DOMAINS[@]}          # 3
+D=${#DOMAINS[@]}          # 2
 TOTAL=$((S * A * D))
 
 if (( SLURM_ARRAY_TASK_ID >= TOTAL )); then
