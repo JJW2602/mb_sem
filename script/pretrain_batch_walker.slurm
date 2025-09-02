@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
-#SBATCH --array=0-99%70
+#SBATCH --array=0-49%50
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.out
 #SBATCH --error=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.err
 
@@ -17,7 +17,7 @@ mkdir -p "$BASE_TMP"
 
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
-DOMAINS=("walker" "quadruped")
+DOMAINS=("walker")
 AGENT_LABELS=("icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
 AGENT_KEYS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
 AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
@@ -25,7 +25,7 @@ AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "d
 
 S=${#SEEDS[@]}            # 10
 A=${#AGENT_LABELS[@]}     # 10
-D=${#DOMAINS[@]}          # 2
+D=${#DOMAINS[@]}          # 1
 TOTAL=$((S * A * D))
 
 
@@ -89,7 +89,7 @@ run_one () {
       action_repeat=1 \
       use_wandb=True \
       snapshot_dir="snapshot" \
-      wandb_project="urlb_pretraining_walker_quadruped" \
+      wandb_project="urlb_pretraining_walker" \
       hydra.run.dir="${LOG_BASE}"
   " >"$OUT" 2>"$ERR" &
 }

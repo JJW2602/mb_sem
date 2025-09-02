@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=URLB
-#SBATCH --partition=base_suma_rtx3090
-#SBATCH --qos=base_qos
+#SBATCH --partition=big_suma_rtx3090
+#SBATCH --qos=big_qos
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
-#SBATCH --array=0-719%30
+#SBATCH --array=0-639%60
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_finetune/%A/%A_%a.out
 #SBATCH --error=/scratch2/james2602/URLB/logs_baseline_finetune/%A/%A_%a.err
 
@@ -17,13 +17,13 @@ mkdir -p "$BASE_TMP"
 
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
-SNAPSHOTS=(100000 300000 500000 700000 1000000 1200000 1500000 1800000 2000000)
-AGENTS=( "icm" "diayn")
+SNAPSHOTS=(100000 500000 1000000 2000000)
+AGENTS=( "smm" "rnd" "disagreement" "cic") #4
 TASKS=("walker_stand" "walker_walk" "walker_run" "walker_flip")
 
 S=${#SEEDS[@]}            # 10
-N=${#SNAPSHOTS[@]}         # 9
-A=${#AGENTS[@]}           # 2
+N=${#SNAPSHOTS[@]}        # 4
+A=${#AGENTS[@]}           # 4
 T=${#TASKS[@]}            # 4
 TOTAL=$((S * N *  A * T))
 
@@ -97,7 +97,7 @@ python finetune.py \
   reward_free=false \
   action_repeat=1 \
   use_wandb=true \
-  wandb_project="urlb_finetuning_walker_icm_diayn" \
+  wandb_project="urlb_finetuning_walker_smm_rnd_disagreement_cic" \
   snapshot_base_dir="/scratch2/james2602/URLB/outputs_pretrain" \
   hydra.run.dir="${LOG_BASE}"
 

@@ -44,7 +44,7 @@ class CIC(nn.Module):
     def forward(self,state,next_state,skill):
         assert len(state.size()) == len(next_state.size())
         state = self.state_net(state)
-        next_state = self.state_net(next_state)
+        next_state = self.next_state_net(next_state)
         query = self.skill_net(skill)
         key = self.pred_net(torch.cat([state,next_state],1))
         return query, key
@@ -197,7 +197,7 @@ class CICAgent(DDPGAgent):
     def compute_apt_reward(self, obs, next_obs):
         args = APTArgs()
         source = self.cic.state_net(obs)
-        target = self.cic.state_net(next_obs)
+        target = self.cic.next_state_net(next_obs)
         reward = compute_apt_reward(source, target, args) # (b,)
         return reward.unsqueeze(-1) # (b,1)
 
@@ -230,7 +230,7 @@ class CICAgent(DDPGAgent):
         if self.use_tb or self.use_wandb:
             if self.reward_free:
                 metrics['extr_reward'] = extr_reward.mean().item()
-                metrics['intr_reward'] = apt_reward.mean().item()
+                metrics['intr_reward'] = reward.mean().item()
             metrics['batch_reward'] = reward.mean().item()
 
         # extend observations with skill

@@ -4,7 +4,7 @@
 #SBATCH --qos=base_qos
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+outputs_pretrain#SBATCH --mem=32G
 #SBATCH --time=72:00:00
 #SBATCH --array=0-9%30
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.out

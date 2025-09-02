@@ -122,6 +122,7 @@ class ICMAPTAgent(DDPGAgent):
                                                        step)
             reward = intr_reward
         else:
+            intr_reward = torch.zeros_like(extr_reward)
             reward = extr_reward
 
         if self.use_tb or self.use_wandb:

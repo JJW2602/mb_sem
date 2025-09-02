@@ -3,10 +3,10 @@
 #SBATCH --partition=big_suma_rtx3090
 #SBATCH --qos=big_qos
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
-#SBATCH --array=0-199%70
+#SBATCH --array=58-99%60
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.out
 #SBATCH --error=/scratch2/james2602/URLB/logs_baseline_pretrain/%A/%A_%a.err
 
@@ -17,7 +17,7 @@ mkdir -p "$BASE_TMP"
 
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
-DOMAINS=("walker" "quadruped")
+DOMAINS=("walker")
 AGENT_LABELS=("icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
 AGENT_KEYS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
 AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "disagreement" "cic")
@@ -25,7 +25,7 @@ AGENT_DIRS=(   "icm" "proto"  "diayn" "icm_apt"  "ind_apt"  "aps" "smm" "rnd" "d
 
 S=${#SEEDS[@]}            # 10
 A=${#AGENT_LABELS[@]}     # 10
-D=${#DOMAINS[@]}          # 2
+D=${#DOMAINS[@]}          # 1
 TOTAL=$((S * A * D))
 
 
@@ -44,7 +44,7 @@ echo "JOB ${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} :: agent_label='${AGENT_L
 
 
 ##### Logging directories #####
-LOG_BASE="/scratch2/james2602/URLB/outputs_pretrain/${DOMAIN}/${AGENT_DIR} /seed_${SEED}"
+LOG_BASE="/scratch2/james2602/URLB/outputs_pretrain/${DOMAIN}/${AGENT_DIR}/seed_${SEED}"
 LOG_DIR="${LOG_BASE}/logs"
 mkdir -p "$LOG_DIR"
 
@@ -95,7 +95,7 @@ python pretrain.py \
   action_repeat=1 \
   use_wandb=True \
   snapshot_dir="snapshot" \
-  wandb_project="urlb_pretraining_walker_quadruped" \
+  wandb_project="urlb_pretraining_walker_smm_rnd_disagreement_cic" \
   hydra.run.dir="${LOG_BASE}"
 
 echo "=========== seff & dmesg ==========="

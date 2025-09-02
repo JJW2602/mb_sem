@@ -18,8 +18,8 @@ mkdir -p "$BASE_TMP"
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
 SNAPSHOTS=(100000 500000 1000000 2000000)
-AGENTS=("icm_apt" "smm" "rnd" "disagreement") #4
-TASKS=("walker_stand" "walker_walk" "walker_run" "walker_flip")
+AGENTS=("smm" "rnd" "disagreement" "cic") #4
+TASKS=("quadruped_walk","quadruped_run", "quadruped_stand", "quadruped_jump")
 
 S=${#SEEDS[@]}            # 10
 N=${#SNAPSHOTS[@]}        # 4
@@ -97,7 +97,7 @@ python finetune.py \
   reward_free=false \
   action_repeat=1 \
   use_wandb=true \
-  wandb_project="urlb_finetuning_walker_icm_apt_smm_rnd_disagreement" \
+  wandb_project="urlb_finetuning_quadruped_smm_rnd_disagreement_cic" \
   snapshot_base_dir="/scratch2/james2602/URLB/outputs_pretrain" \
   hydra.run.dir="${LOG_BASE}"
 
