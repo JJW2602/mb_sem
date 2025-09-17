@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=72:00:00
-#SBATCH --array=0-799%60
+#SBATCH --array=0-479%60
 #SBATCH --output=/scratch2/james2602/URLB/logs_baseline_finetune/%A/%A_%a.out
 #SBATCH --error=/scratch2/james2602/URLB/logs_baseline_finetune/%A/%A_%a.err
 
@@ -18,12 +18,12 @@ mkdir -p "$BASE_TMP"
 ##### Job settings #####
 SEEDS=(1 2 3 4 5 6 7 8 9 10)
 SNAPSHOTS=(100000 500000 1000000 2000000)
-AGENTS=("cic" "proto" "disagreement" "rnd" "smm") #4
-TASKS=("quadruped_walk" "quadruped_run" "quadruped_stand" "quadruped_jump")
+AGENTS=("aps" "cic" "proto") #4
+TASKS=("walker_stand" "walker_walk" "walker_run" "walker_flip")
 
 S=${#SEEDS[@]}            # 10
 N=${#SNAPSHOTS[@]}        # 4
-A=${#AGENTS[@]}           # 5
+A=${#AGENTS[@]}           # 3
 T=${#TASKS[@]}            # 4
 TOTAL=$((S * N *  A * T))
 
@@ -97,7 +97,7 @@ python finetune.py \
   reward_free=false \
   action_repeat=1 \
   use_wandb=true \
-  wandb_project="urlb_finetuning_quadruped_cic_proto_disagreement_rnd_smm" \
+  wandb_project="urlb_finetuning_walker_aps_cic_proto" \
   snapshot_base_dir="/scratch2/james2602/URLB/outputs_pretrain" \
   hydra.run.dir="${LOG_BASE}"
 

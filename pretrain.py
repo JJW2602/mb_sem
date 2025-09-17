@@ -1,5 +1,6 @@
 import warnings
 from tqdm import tqdm
+from omegaconf import open_dict 
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 import os
@@ -43,10 +44,23 @@ class Workspace:
         utils.set_seed_everywhere(cfg.seed)
         self.device = torch.device(cfg.device)
 
+        # create envs
+        task = getattr(self.cfg, 'task', None)
+        if task and '_' in task:
+            derived_domain = task.split('_', 1)[0]
+            with open_dict(self.cfg):
+                self.cfg.domain = derived_domain
+        else:
+            task = PRIMAL_TASKS[self.cfg.domain]
+        print(f"[env] selected task = {task}")
+        self.train_env = dmc.make(task, cfg.obs_type, cfg.frame_stack,
+                                  cfg.action_repeat, cfg.seed)
+        self.eval_env = dmc.make(task, cfg.obs_type, cfg.frame_stack,
+                                 cfg.action_repeat, cfg.seed)
         # create logger
         if cfg.use_wandb:
             exp_name = '_'.join([
-                cfg.experiment, cfg.domain, cfg.agent.name, cfg.obs_type,
+                cfg.experiment, cfg.domain, cfg.agent.name, cfg.task, cfg.obs_type,
                 str(cfg.seed)
             ])
             wandb.init(project=cfg.wandb_project, group=cfg.agent.name, name=exp_name)
@@ -54,12 +68,7 @@ class Workspace:
         self.logger = Logger(self.work_dir,
                              use_tb=cfg.use_tb,
                              use_wandb=cfg.use_wandb)
-        # create envs
-        task = PRIMAL_TASKS[self.cfg.domain]
-        self.train_env = dmc.make(task, cfg.obs_type, cfg.frame_stack,
-                                  cfg.action_repeat, cfg.seed)
-        self.eval_env = dmc.make(task, cfg.obs_type, cfg.frame_stack,
-                                 cfg.action_repeat, cfg.seed)
+        
 
         # create agent
         self.agent = make_agent(cfg.obs_type,

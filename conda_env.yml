@@ -1,4 +1,4 @@
-name: urlb
+name: URLB
 channels:
   - conda-forge
   - nvidia

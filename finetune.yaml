@@ -43,7 +43,7 @@ experiment: exp
 
 hydra:
   run:
-    dir: scratch2/james2602/URLB/outputs_finetune/${task}/${agent.name}/snapshot_${snapshot_ts}/seed_${seed}
+    dir: scratch2/james2602/URLB/outputs_finetune/${task}/${agent.name}/snapshot_${snapshot_ts}/seed_${seed}/sf_dim_${agent.sf_dim}
   sweep:
     dir: ./exp_sweep/${now:%Y.%m.%d}/${now:%H%M}_${agent.name}_${experiment}
     subdir: ${hydra.job.num}
