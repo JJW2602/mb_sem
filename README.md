@@ -8,21 +8,21 @@ To run the code follow the instructions bellow.
 
 ## Requirement
 
-'''bash
+**\'\'\'bash**
 conda env create -f conda_env.yml
-'''
+**\'\'\'**
 
 ## Training
 --------
 
 ### 1. Pretrain
 
-'''bash
+**\'\'\'bash**
 python pretrain.py agent=diayn domain=walker
-'''
+**\'\'\'**
 
 ### 2. Finetuning
 
-'''bash
+**\'\'\'bash**
 mb_finetune.py agent=apt task=walker_run snapshot_ts=1000000 obs_type=states reward_free=false k=15
-'''
+**\'\'\'**
