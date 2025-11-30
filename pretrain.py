@@ -63,7 +63,11 @@ class Workspace:
                 cfg.experiment, cfg.domain, cfg.agent.name, cfg.task, cfg.obs_type,
                 str(cfg.seed)
             ])
-            wandb.init(project=cfg.wandb_project, group=cfg.agent.name, name=exp_name)
+            wandb.init(
+                entity="jjwook-yonsei-university",
+                project=cfg.wandb_project,
+                group=cfg.agent.name,
+                name=exp_name)
 
         self.logger = Logger(self.work_dir,
                              use_tb=cfg.use_tb,
@@ -247,7 +251,10 @@ class Workspace:
                 self.total_step_episode_period = self.global_episode * episode_frame
                 if self.total_step_episode_period in self.cfg.snapshots:
                     self.save_snapshot()
-                episode_step = 0 # if walker, quadruped env, episode_step starts from 0
+                if self.cfg.domain == 'jaco':
+                    episode_step = 1 # if walker, quadruped env, episode_step starts from 0 ; jaco starts from 1
+                else:
+                    episode_step = 0
                 episode_reward = 0
 
             # try to evaluate
@@ -267,7 +274,12 @@ class Workspace:
                                         eval_mode=False)
 
             # try to update the agent
-            if not seed_until_step(self.global_step):
+            if self.cfg.domain == 'jaco':
+                self.cfg.starting_episode = 1
+            else:
+                self.cfg.starting_episode = 0
+
+            if (not seed_until_step(self.global_step) and (episode_step > self.cfg.starting_episode)):
                 metrics = self.agent.update(self.replay_iter, self.global_step)
                 self.logger.log_metrics(metrics, self.global_frame, ty='train')
 

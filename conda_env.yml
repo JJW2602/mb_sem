@@ -21,7 +21,7 @@ dependencies:
     - cachetools==5.5.2
     - configparser==7.1.0
     - decorator==4.4.2
-    - dm-control==1.0.20
+    - dm-control==1.0.10
     - dm-env==1.6
     - dm-tree==0.1.8
     - docker-pycreds==0.4.0
@@ -35,7 +35,7 @@ dependencies:
     - grpcio==1.70.0
     - hydra-core==1.1.0
     - hydra-submitit-launcher==1.1.5
-    - imageio-ffmpeg==0.4.4
+    - imageio-ffmpeg==0.4.2
     - imageio==2.9.0
     - ipdb==0.13.9
     - joblib==1.4.2
@@ -44,7 +44,7 @@ dependencies:
     - markdown==3.7
     - matplotlib==3.4.2
     - moviepy==1.0.3
-    - mujoco==3.1.6
+    - mujoco==3.1.4
     - oauthlib==3.3.1
     - omegaconf==2.1.2
     - opencv-python==4.5.3.56

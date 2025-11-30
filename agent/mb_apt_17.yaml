@@ -1,6 +1,6 @@
 # @package agent
-_target_: agent.icm_apt.ICMAPTAgent
-name: ind_apt # identity mapping
+_target_: agent.mb_apt_17.APSAgent
+name: mb_apt_17
 reward_free: ${reward_free}
 obs_type: ??? # to be specified later
 obs_shape: ??? # to be specified later
@@ -16,7 +16,8 @@ hidden_dim: 1024
 feature_dim: 50
 stddev_schedule: 0.2
 stddev_clip: 0.3
-icm_scale: 1.0
+sf_dim: 64 #4
+update_task_every_step: 5
 nstep: 3
 batch_size: 1024
 init_critic: true
@@ -24,5 +25,6 @@ knn_rms: true
 knn_k: 12
 knn_avg: true
 knn_clip: 0.0001
-state_flag: true
+num_init_steps: 4096 # set to ${num_train_frames} to disable finetune policy parameters
+lstsq_batch_size: 4096
 update_encoder: ${update_encoder}

@@ -1,6 +1,23 @@
 # @package agent
-_target_: agent.proto.ProtoAgent
-name: proto
+_target_: agent.mb_apt_20.SMMAgent
+name: mb_apt_20
+
+# z params
+z_dim: 4 # default in codebase is 4
+
+# z discriminator params
+sp_lr: 1e-3
+
+# vae params
+vae_lr: 1e-2
+vae_beta: 0.5
+
+# reward params
+state_ent_coef: 1.0
+latent_ent_coef: 1.0
+latent_cond_ent_coef: 1.0
+
+# DDPG params
 reward_free: ${reward_free}
 obs_type: ??? # to be specified later
 obs_shape: ??? # to be specified later
@@ -19,11 +36,4 @@ stddev_clip: 0.3
 nstep: 3
 batch_size: 1024
 init_critic: true
-pred_dim: 128
-proj_dim: 512
-num_protos: 512
-tau: 0.1
-topk: 3
-queue_size: 2048
-encoder_target_tau: 0.05
 update_encoder: ${update_encoder}

@@ -134,11 +134,11 @@ class APSAgent(DDPGAgent):
     def init_meta(self):
         if self.solved_meta is not None:
             return self.solved_meta
-        task = torch.randn(self.sf_dim)
-        task = task / torch.norm(task)
-        task = task.cpu().numpy()
+        idx  = torch.randint(0, self.sf_dim, (1,))      
+        task = F.one_hot(idx, num_classes=self.sf_dim)  
+        task = task.float().squeeze(0)                 
         meta = OrderedDict()
-        meta['task'] = task
+        meta['task'] = task.cpu().numpy()
         return meta
 
     def update_meta(self, meta, global_step, time_step):

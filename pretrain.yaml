@@ -15,6 +15,7 @@ discount: 0.99
 # train settings
 num_train_frames: 2000010
 num_seed_frames: 4000
+starting_episode: 0 # starting episode count (for resuming)
 # eval
 eval_every_frames: 1000
 video_eval_every_frames: 10000
@@ -37,7 +38,7 @@ save_train_video: false
 use_tb: false
 # wandb settings
 use_wandb: false
-wandb_project: url_benchmark
+wandb_project: MB_SEM
 # experiment
 experiment: exp
 
